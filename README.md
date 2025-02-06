@@ -270,7 +270,7 @@ make
 ```
 A página estará acessível na porta 8080
 
-# Exclusão da Web Page localmente
+## Exclusão da Web Page localmente
 Para remover o container e a imagem criados, execute:
 ```sh
 make rm
