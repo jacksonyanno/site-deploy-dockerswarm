@@ -1,5 +1,5 @@
 # Introdução
-Este projeto tem como objetivo facilitar a implantação de um _site_ em um cluster Docker Swarm (Swarm mode), usando Traefik como proxi reverso e SSL. Ele foi implantado em servidores da [Digital Ocean (DO)](https://www.digitalocean.com/).
+Este projeto tem como objetivo facilitar a implantação de um _site_ em um cluster [Docker Swarm (Swarm mode)](https://docs.docker.com/engine/swarm/), usando [Traefik Proxy](https://doc.traefik.io/traefik/) como proxy reverso e SSL. Ele foi implantado em servidores da [Digital Ocean (DO)](https://www.digitalocean.com/).
   
 É importante frizar que, atualmente, a tecnologia de orquestração de conteiners mais utilizada no mercado é o [Kubernetes](https://kubernetes.io/), por sua robustez e amplo suporte. Portanto, para ambientes de produção e/ou homologação, recomenda-se utilizar o `Kubernetes` ou `serviços de nuvem gerenciados`. 
   
@@ -7,12 +7,12 @@ Pela simplicidade do `Docker Swarm Mode`, essa pode ser uma ótima ferramenta pa
 
 # Pré-requisitos
 1. Ter o sistema operacional [Ubuntu 20.04 LTS (Focal Fossa)](https://releases.ubuntu.com/focal/) ou superior instalado na própria máquina
-2. Ter, pelo menos, 2 (dois) servidores na [Digital Ocean (DO)](https://www.digitalocean.com/) com sistema operacional `20.04 LTS (Focal Fossa)` ou superior
-3. Configurar os servidores remotos no [modo Swarm (cluster Docker Swarm)](#instalação-e-configuração-do-docker-e-do-modo-swarm), obtendo um nó `manager` e outro `worker` 
-4. Ter um [domínio apontando para o IP do servidor remoto](#obter-e-configurar-domínio) que esteja configurado como configurado como nó `manager` 
+2. Ter, pelo menos, 2 (dois) servidores na [Digital Ocean (DO)](https://www.digitalocean.com/) com sistema operacional `Ubuntu 20.04 LTS (Focal Fossa)` ou superior
+3. Configurar os servidores remotos configurados com o `Docker Swarm Mode`, com pelo menos um nó `manager` e outro `worker` ([link](#instalação-e-configuração-do-docker-e-do-modo-swarm)) 
+4. Ter um `domínio` apontando para o IP do servidor remoto que esteja configurado como configurado como nó `manager` ([link](#obtenção-e-configuração-de-um-domínio))
 
-# Configuração
-## Acesso via SSH aos servidores remotos
+# Configurações
+## Acesso aos servidores remotos via SSH sem senha
 1. Instalar o Update Droplet Console (DigitalOcean) no Ubuntu local
 ```sh
 wget -qO- https://repos-droplet.digitalocean.com/install.sh | sudo bash
@@ -59,7 +59,7 @@ PasswordAuthentication no
 systemctl restart sshd
 ```
 
-## Instalação e configuração do Docker e do modo Swarm
+## Instalação e configuração do `Docker Engine` e do `Docker Swarm Mode`
 1. Instalar e configurar o `Docker Engine` no `sistema operacional local` e nos `servidores da Digital Ocean` ([Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/))
 ```sh
 # instalar atualizações mais recentes do sistema
@@ -146,7 +146,7 @@ server-manager                                            ssh://root@hom1
 docker context use server-manager
 ```
 
-## Obtenção e confugração de um domínio
+## Obtenção e configuração de um domínio
 1. Neste ponto é necessário comprar um domínio ou obtê-lo de forma gratuita
     - É possível obter um domínio gratuito no site [Freenom - Domínios gratuitos](https://www.freenom.com/pt/index.html) 
 2. De posse de um dominio (ex.: mysite.com), siga para a área de gerenciamento do seu domínio e subistitua os servidores de nomes  padrões (NS) pelos Name Servers da `Digital Ocean` para que seu domínio possa ser gerenciado pela `DO`
@@ -261,9 +261,9 @@ docker stack rm webpage
 ```
 
 ---
-# Para a execução desta Web Page no sistema local. 
+# Lançamento da Web Page no sistema local. 
 > Certifique-se selecionar o contexto docker local (`default`), conforme aborado em [seção anterior](#criar-um-contexto-docker-na-máquina-local-apontando-para-o-nó-manager) 
-## Criar uma imagem e serveir a Web Page localmente
+## Criar uma imagem e servir a Web Page localmente
 Para isso, basta executar o seguinte comando na raiz do projeto:
 ```sh
 make
